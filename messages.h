@@ -20,8 +20,6 @@ class Messages
 
     public:
     int quiet = 0;
-    void status_message(std::ostringstream, int);
     void status_message(std::string, int);
-    void message(std::ostringstream);
     void message(std::string);
 };

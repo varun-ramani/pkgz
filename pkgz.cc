@@ -3,12 +3,13 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <getopt.h>
+#include <ostream>
 
 #include "messages.h"
 #include "package.h"
 
 Messages* messages = new Messages();
-Package* pkg;
+Package* pkg = new Package();
 
 static struct option long_options[] = {
     {"quiet", no_argument, &messages->quiet, 1},
@@ -29,15 +30,16 @@ int main(int argc, char *argv[])
     int option_index;
     char c;
     while ((c = getopt_long(argc, argv, short_options, long_options, &option_index)) != -1) {
-        switch (c) {
-        case 0:
-            break;
-        case 'p':
+        if (c == 0) {
 
-            break;
-        case 'v':
-            printf("Viewing \n");
-            break;
+        } else if (c == 'p') { 
+            std::ostringstream s;
+            s << "Package Archive => '" << optarg << "'";
+            messages->message(s.str());
+
+            pkg->set_pkg_path(optarg);
+        } else if (c == 'v') {
+
         }
     }
     return 0;
