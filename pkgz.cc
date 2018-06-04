@@ -9,39 +9,51 @@
 #include "package.h"
 
 Messages* messages = new Messages();
-Package* pkg = new Package();
+Package* pkg = new Package(); 
+
+int quiet;
+int showinfo;
 
 static struct option long_options[] = {
-    {"quiet", no_argument, &messages->quiet, 1},
+    {"quiet", no_argument, 0, 'q'},
+
     
     {"package", required_argument, 0, 'p'},
 
-    {"view", no_argument, 0, 'v'},
-    {"extract", no_argument, 0, 'x'},
+    {"info", no_argument, &showinfo, 1},
 
-    {"install", optional_argument, 0, 'i'},
+    {"install", required_argument, 0, 'i'},
     {0, 0, 0, 0}
 };
 
-static char* short_options = "p:i:";
+static char* short_options = "qp:i";
 
 int main(int argc, char *argv[]) 
 {
     int option_index;
     char c;
     while ((c = getopt_long(argc, argv, short_options, long_options, &option_index)) != -1) {
-        if (c == 0) {
-
-        } else if (c == 'p') { 
-            std::ostringstream s;
-            s << "Package Archive => '" << optarg << "'";
-            messages->message(s.str());
-
-            pkg->set_pkg_path(optarg);
-        } else if (c == 'v') {
-
-        }
+        if (c == 'q') messages->setQuiet();
+        else if (c == 'p') pkg->set_package_path(optarg);
+        else if (c == 'i') pkg->set_install_path(optarg);
     }
+
+    std::ostringstream* s = new std::ostringstream();
+    *s << "PACKAGE ARCHIVE: '" << pkg->get_pkg_path() << "'";
+    messages->message(s->str());
+    delete s;
+
+    if (!pkg->verifyPackage()) {
+        messages->status_message("INVALID OR CORRUPTED PACKAGE!", status_error);
+        exit(1);
+    }
+
+    pkg->loadMetadata();
+
+    if (showinfo) {
+        messages->message("PACKAGE INFORMATION:");
+        pkg->loadMetadata();
+    }
+
     return 0;
 }
-

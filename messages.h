@@ -19,7 +19,8 @@ class Messages
 {
 
     public:
-    int quiet = 0;
+    bool quiet = false;
     void status_message(std::string, int);
     void message(std::string);
+    void setQuiet();
 };
