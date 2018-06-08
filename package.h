@@ -1,26 +1,28 @@
 #include <unistd.h>
 #include <sstream>
 #include <string>
-#include <archive.h>
+#include <iostream>
+#include <limits.h>
 
 #define INVALID_PACKAGE false
 #define VALID_PACKAGE true
 
 class Package {
     private:
-    std::string pkg_path;
-    std::string install_path;
+    char *pkg_path;
+    char *install_path;
 
-    std::string name;
+    const char *name;
     double version;
 
     public:
-    void set_package_path(std::string);
-    void set_install_path(std::string);
+    void set_package_path(char *path);
+    void set_install_path(char *path);
 
     bool verifyPackage();
     void loadMetadata();
+    void install();
 
-    std::string get_pkg_path();
-    std::string get_install_path();
+    char* get_pkg_path();
+    char* get_install_path();
 };
