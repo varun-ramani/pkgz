@@ -22,7 +22,7 @@ void Package::install() {
 }
 
 void Package::loadMetadata() {
-
+    
 }
 
 bool Package::verifyPackage() {

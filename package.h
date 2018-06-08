@@ -3,6 +3,8 @@
 #include <string>
 #include <iostream>
 #include <limits.h>
+#include <cstdio>
+#include <memory>
 
 #define INVALID_PACKAGE false
 #define VALID_PACKAGE true
